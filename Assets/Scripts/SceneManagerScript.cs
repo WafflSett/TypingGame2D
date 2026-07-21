@@ -14,12 +14,6 @@ public class SceneManagerScript : MonoBehaviour
             highscore.text = "Highscore: " + PlayerPrefs.GetInt("highscore").ToString();
         }
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void StartGame()
     {
         SceneManager.LoadScene("MainScene");
@@ -33,5 +27,10 @@ public class SceneManagerScript : MonoBehaviour
     public void GoToShop()
     {
         SceneManager.LoadScene("ShopScene");
+    }
+
+    public void QuitGame()
+    {
+        Application.Quit();
     }
 }

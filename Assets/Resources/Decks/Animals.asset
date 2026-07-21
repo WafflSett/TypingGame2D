@@ -23,3 +23,5 @@ MonoBehaviour:
   - LOBSTER
   - CHICKEN
   - BUTTERFLY
+  icon: {fileID: 0}
+  title: Animals

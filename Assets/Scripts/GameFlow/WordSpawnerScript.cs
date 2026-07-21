@@ -8,7 +8,7 @@ public class WordSpawnerScript : MonoBehaviour
     public GameObject wordObject;
     public float spawnOffset = 6;
     public float spawnRate = 2;
-    public string[] wordList;
+    private string[] wordList;
     private List<string> wordBucket;
     private float timer = 0;
     private LogicScript logic;
@@ -16,7 +16,7 @@ public class WordSpawnerScript : MonoBehaviour
     void Start()
     {
         logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
-
+        wordList = GameManager.instance.deck.words;
         spawnWordObject();
     }
 

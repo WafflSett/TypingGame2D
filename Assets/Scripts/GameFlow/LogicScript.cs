@@ -15,6 +15,7 @@ public class LogicScript : MonoBehaviour
     public TimeSpan timeLeft = TimeSpan.FromSeconds(10);
     private int comboCounter = 0;
     private int highScore;
+    private GameManager gameManager;
     public int ComboMult { get {
             if (comboCounter >= 50)
                 return 5;
@@ -48,6 +49,7 @@ public class LogicScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        gameManager = GameManager.instance;
         highScore = PlayerPrefs.GetInt("highscore");
         hiText.text = highScore.ToString();
     }
@@ -62,6 +64,7 @@ public class LogicScript : MonoBehaviour
         }
         else
         {
+            gameManager.AddBalance(playerScore);
             SceneManager.LoadScene("ShopScene");
         }
     }

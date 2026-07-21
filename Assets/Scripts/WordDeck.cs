@@ -4,4 +4,6 @@ using UnityEngine;
 public class WordDeck : ScriptableObject
 {
     public string[] words;
+    public Sprite icon;
+    public string title;
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -11,6 +12,8 @@ public class GameManager : MonoBehaviour
         get { return balance; }
         set { balance = value; }
     }
+
+    public WordDeck deck;
 
     private void Awake()
     {
@@ -25,4 +28,8 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void AddBalance(int gain)
+    {
+        Balance += gain;
+    }
 }
