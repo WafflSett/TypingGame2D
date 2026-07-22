@@ -77,7 +77,10 @@ public class LogicScript : MonoBehaviour
         }
         else
         {
-            SetResults();
+            if (GameManager.instance.isInGame)
+            {
+                SetResults();
+            }
         }
     }
 

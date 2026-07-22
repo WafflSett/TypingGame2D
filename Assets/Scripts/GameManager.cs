@@ -6,12 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance { get; private set; }
 
-    private int balance;
-    public int Balance
-    {
-        get { return balance; }
-        set { balance = value; }
-    }
+    public int Balance;
 
     public WordDeck deck;
     public bool isInGame = false;

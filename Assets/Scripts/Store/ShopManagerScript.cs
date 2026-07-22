@@ -10,7 +10,7 @@ public class ShopManager : MonoBehaviour
     public int Balance
     {
         get { return balance; }
-        set { balance = value; balanceText.text = $"Balance: ${Balance}"; }
+        set { balance = value; balanceText.text = $"Balance: ${value}"; }
     }
 
 

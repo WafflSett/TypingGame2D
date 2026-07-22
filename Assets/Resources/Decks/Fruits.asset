@@ -23,5 +23,5 @@ MonoBehaviour:
   - PINEAPPLE
   - RASPBERRY
   - WATERMELON
-  icon: {fileID: 0}
+  icon: {fileID: -5321949957799140045, guid: dca5b805e227be546848315ebc5e8957, type: 3}
   title: Fruits

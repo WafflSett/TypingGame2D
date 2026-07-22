@@ -1,12 +1,15 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelSelect : MonoBehaviour
 {
     [SerializeField]
     public TMP_Text title_field;
     public SceneLoader sceneLoader;
+    public Image selectedImage;
+
 
     private WordDeck[] decks;
 
@@ -17,7 +20,8 @@ public class LevelSelect : MonoBehaviour
         set { 
             selectedDeck = value;
             title_field.text = selectedDeck.title;
-                }
+            selectedImage.sprite = selectedDeck.icon;
+            }
     }
 
     private int selectedIndex;
