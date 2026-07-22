@@ -19,10 +19,4 @@ public class ShopManager : MonoBehaviour
     {
         Balance = GameManager.instance.Balance;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -6,7 +6,7 @@ public class LevelSelect : MonoBehaviour
 {
     [SerializeField]
     public TMP_Text title_field;
-
+    public SceneLoader sceneLoader;
 
     private WordDeck[] decks;
 
@@ -50,6 +50,6 @@ public class LevelSelect : MonoBehaviour
     public void StartGame()
     {
         GameManager.instance.deck = SelectedDeck;
-        SceneManager.LoadScene("MainScene");
+        sceneLoader.StartGame();
     }
 }

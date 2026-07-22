@@ -12,6 +12,7 @@ public class WordSpawnerScript : MonoBehaviour
     private List<string> wordBucket;
     private float timer = 0;
     private LogicScript logic;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -23,6 +24,9 @@ public class WordSpawnerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // do nothing if game over
+        if (!GameManager.instance.isInGame) return;
+
         if (timer > Random.Range(spawnRate, spawnRate+2))
         {
             timer = 0;
@@ -62,14 +66,15 @@ public class WordSpawnerScript : MonoBehaviour
         }
         else if (ts.startingText.Length > 4 && ts.startingText.Length <= 6)
         {
-            ts.moveSpeed = 2;
+            ts.moveSpeed = 2.5f;
         }
         else if (ts.startingText.Length>6&&ts.startingText.Length<=8)
         {
-            ts.moveSpeed = 1.5f;
+            ts.moveSpeed = 2f;
         }else 
         {
-            ts.moveSpeed = 1;
+            ts.moveSpeed = 1.5f;
         }
+        logic.wordsInPlay.Add(newWord);
     }
 }

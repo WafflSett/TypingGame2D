@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     }
 
     public WordDeck deck;
+    public bool isInGame = false;
 
     private void Awake()
     {

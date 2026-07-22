@@ -1,21 +1,34 @@
 using System;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class LogicScript : MonoBehaviour
 {
+    public SceneLoader sceneLoader;
+    public GameObject ResultScreen;
+    public GameObject GameScreen;
     public Text scoreText;
     public Text comboText;
     public Text multText;
     public Text hiText;
     public Text timerText;
+    public TMP_Text ResAccuracyText;
+    public TMP_Text ResEarnedText;
+    public TMP_Text ResComboText;
     public ParticleSystem comboParticles;
-    public int playerScore = 0;
+    
     public TimeSpan timeLeft = TimeSpan.FromSeconds(10);
+
+    public HashSet<GameObject> wordsInPlay = new HashSet<GameObject>();
+    public HashSet<GameObject> highlightedWords = new HashSet<GameObject>();
+    private int maxHighlight = 2;
+    private int playerScore = 0;
     private int comboCounter = 0;
+    private int maxCombo = 0;
     private int highScore;
-    private GameManager gameManager;
     public int ComboMult { get {
             if (comboCounter >= 50)
                 return 5;
@@ -49,9 +62,9 @@ public class LogicScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gameManager = GameManager.instance;
         highScore = PlayerPrefs.GetInt("highscore");
         hiText.text = highScore.ToString();
+        GameManager.instance.isInGame = true;
     }
 
     // Update is called once per frame
@@ -64,16 +77,38 @@ public class LogicScript : MonoBehaviour
         }
         else
         {
-            gameManager.AddBalance(playerScore);
-            SceneManager.LoadScene("ShopScene");
+            SetResults();
         }
+    }
+
+    public bool HighlightWord(GameObject word)
+    {
+        if (maxHighlight>0 && highlightedWords.Count >= maxHighlight) return false;
+        highlightedWords.Add(word);
+        return true;
+    }
+
+    public void SetResults()
+    {
+        GameManager.instance.AddBalance(playerScore);
+        GameManager.instance.isInGame = false;
+        GameScreen.SetActive(false);
+        ResultScreen.SetActive(true);
+        ResAccuracyText.text = "Accuracy: ";
+        ResEarnedText.text = $"Earned: ${playerScore}";
+        ResComboText.text = $"Highest Combo: {maxCombo}";
     }
 
     public void addScore(int value = 1) {
         if (value > 0)
+        {
             comboCounter += value;
+            if (comboCounter>maxCombo) maxCombo = comboCounter;
+        }
         else
+        {
             comboCounter = 0;
+        }
         playerScore += (value*ComboMult);
         if (playerScore > highScore)
             highScore = playerScore;
