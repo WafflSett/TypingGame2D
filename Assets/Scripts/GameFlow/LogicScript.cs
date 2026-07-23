@@ -97,12 +97,12 @@ public class LogicScript : MonoBehaviour
             if (String.IsNullOrEmpty(inString)) return;
             foreach (var word in wordsInPlay)
             {
-                var ts = word.GetComponent<TypingScript>();
-                if (ts.textMesh.text.ToLower().StartsWith(inString.ToLower()))
+                var wt = word.GetComponent<WordTarget>();
+                if (wt.textMesh.text.ToLower().StartsWith(inString.ToLower()))
                 {
                     if (HighlightWord(word))
                     {
-                        ts.isHighlighted = true;
+                        wt.isHighlighted = true;
                     }
                 }
             }
@@ -110,18 +110,23 @@ public class LogicScript : MonoBehaviour
             int wordsHit = 0;
             foreach (var word in highlightedWords)
             {
-                var ts = word.GetComponent<TypingScript>();
-                if (ts.textMesh.text.ToLower().StartsWith(inString.ToLower()))
+                var wt = word.GetComponent<WordTarget>();
+                if (wt.textMesh.text.ToLower().StartsWith(inString.ToLower()))
                 {
-                    addScore();
-                    ts.textMesh.text = ts.textMesh.text.Remove(0, 1);
-                    ts.textMesh.color = Color.yellow;
+                    int score = addScore();
+                    wt.textMesh.text = wt.textMesh.text.Remove(0, 1);
+                    wt.textMesh.color = Color.yellow;
                     lss.spawnLaser(word);
                     wordsHit++;
-                    if (String.IsNullOrEmpty(ts.textMesh.text))
+                    if (String.IsNullOrEmpty(wt.textMesh.text))
                     {
-                        addScore(10);
+                        int value = addScore(wt.startingText.Length);
+                        DamagePopup.Create(word.transform.position, $"+{value}", true);
                         Destroy(word);
+                    }
+                    else
+                    {
+                        DamagePopup.Create(word.transform.position, $"+{score}");
                     }
                 }
             }
@@ -157,7 +162,7 @@ public class LogicScript : MonoBehaviour
         ResComboText.text = $"Highest Combo: {maxCombo}";
     }
 
-    public void addScore(int value = 1) {
+    public int addScore(int value = 1) {
         if (value > 0)
         {
             comboCounter += value;
@@ -171,6 +176,7 @@ public class LogicScript : MonoBehaviour
         if (playerScore > highScore)
             highScore = playerScore;
         updateUI();
+        return (value * ComboMult);
     }
 
     public void updateUI() {

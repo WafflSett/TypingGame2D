@@ -50,7 +50,7 @@ public class WordSpawnerScript : MonoBehaviour
         float leftMax = transform.position.x - spawnOffset;
         float rightMax = transform.position.x + spawnOffset;
         GameObject newWord = Instantiate(wordObject, new Vector3(Random.Range(leftMax,rightMax), transform.position.y, 0), transform.rotation);
-        TypingScript ts = newWord.GetComponent<TypingScript>();
+        WordTarget ts = newWord.GetComponent<WordTarget>();
         if (wordBucket==null || wordBucket.Count<=0)
         {
             wordBucket = wordList.ToList();

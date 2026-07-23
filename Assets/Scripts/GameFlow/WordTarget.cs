@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TypingScript : MonoBehaviour
+public class WordTarget : MonoBehaviour
 {
     public float moveSpeed = 2;
     public string startingText = "test";
