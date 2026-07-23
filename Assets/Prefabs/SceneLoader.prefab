@@ -386,7 +386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   highscore: {fileID: 0}
   transition: {fileID: 6158094423595819139}
-  transitionTime: 0.75
+  transitionTime: 0.5
 --- !u!1 &4501187574678837409
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,17 +7,15 @@ public class TypingScript : MonoBehaviour
 {
     public float moveSpeed = 2;
     public string startingText = "test";
-    private TMP_Text textMesh;
+    public TMP_Text textMesh;
     private LogicScript logic;
-    private LaserSpawnerScript pss;
-    private bool isHighlighted = false;
+    public bool isHighlighted = false;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         textMesh = gameObject.GetComponent<TMP_Text>();
         logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
-        pss = GameObject.FindGameObjectWithTag("LaserSpawn").GetComponent<LaserSpawnerScript>();
         textMesh.text = startingText;
     }
 
@@ -28,26 +26,6 @@ public class TypingScript : MonoBehaviour
         if (Input.anyKeyDown)
         {
             string inString = Input.inputString;
-            if (!String.IsNullOrEmpty(Input.inputString) && textMesh.text.ToLower().StartsWith(inString.ToLower()))
-            {
-                if (logic.HighlightWord(gameObject))
-                {
-                    isHighlighted = true;
-                }
-
-                if (isHighlighted)
-                {
-                    logic.addScore();
-                    textMesh.text = textMesh.text.Remove(0, 1);
-                    textMesh.color = Color.yellow;
-                    pss.spawnLaser(this.gameObject);
-                    if (String.IsNullOrEmpty(textMesh.text))
-                    {
-                        logic.addScore(10);
-                        Destroy(gameObject);
-                    }
-                }
-            }
         }
         moveSelf();
     }

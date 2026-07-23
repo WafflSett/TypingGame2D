@@ -21,7 +21,6 @@ public class LogicScript : MonoBehaviour
     public ParticleSystem comboParticles;
     
     public TimeSpan timeLeft = TimeSpan.FromSeconds(10);
-
     public HashSet<GameObject> wordsInPlay = new HashSet<GameObject>();
     public HashSet<GameObject> highlightedWords = new HashSet<GameObject>();
     private int maxHighlight = 2;
@@ -29,6 +28,9 @@ public class LogicScript : MonoBehaviour
     private int comboCounter = 0;
     private int maxCombo = 0;
     private int highScore;
+    private int missed;
+    private int hit;
+    private LaserSpawnerScript lss;
     public int ComboMult { get {
             if (comboCounter >= 50)
                 return 5;
@@ -62,6 +64,7 @@ public class LogicScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        lss = GameObject.FindGameObjectWithTag("LaserSpawn").GetComponent<LaserSpawnerScript>();
         highScore = PlayerPrefs.GetInt("highscore");
         hiText.text = highScore.ToString();
         GameManager.instance.isInGame = true;
@@ -70,10 +73,12 @@ public class LogicScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (timeLeft.TotalMilliseconds>0)
+        if (timeLeft.TotalMilliseconds > 0)
         {
             timeLeft = timeLeft - TimeSpan.FromSeconds(Time.deltaTime);
             timerText.text = timeLeft.ToString(@"mm\'ss\'ff");
+
+            CheckForHits();
         }
         else
         {
@@ -81,6 +86,53 @@ public class LogicScript : MonoBehaviour
             {
                 SetResults();
             }
+        } 
+    }
+
+    private void CheckForHits()
+    {
+        if (Input.anyKeyDown)
+        {
+            string inString = Input.inputString;
+            if (String.IsNullOrEmpty(inString)) return;
+            foreach (var word in wordsInPlay)
+            {
+                var ts = word.GetComponent<TypingScript>();
+                if (ts.textMesh.text.ToLower().StartsWith(inString.ToLower()))
+                {
+                    if (HighlightWord(word))
+                    {
+                        ts.isHighlighted = true;
+                    }
+                }
+            }
+
+            int wordsHit = 0;
+            foreach (var word in highlightedWords)
+            {
+                var ts = word.GetComponent<TypingScript>();
+                if (ts.textMesh.text.ToLower().StartsWith(inString.ToLower()))
+                {
+                    addScore();
+                    ts.textMesh.text = ts.textMesh.text.Remove(0, 1);
+                    ts.textMesh.color = Color.yellow;
+                    lss.spawnLaser(word);
+                    wordsHit++;
+                    if (String.IsNullOrEmpty(ts.textMesh.text))
+                    {
+                        addScore(10);
+                        Destroy(word);
+                    }
+                }
+            }
+
+            if (wordsHit == 0)
+            {
+                missed++;
+                addScore(0); // reset combo meter
+            }
+            else
+                hit++;
         }
     }
 
@@ -97,7 +149,10 @@ public class LogicScript : MonoBehaviour
         GameManager.instance.isInGame = false;
         GameScreen.SetActive(false);
         ResultScreen.SetActive(true);
-        ResAccuracyText.text = "Accuracy: ";
+        if (hit + missed > 0)
+            ResAccuracyText.text = $"Accuracy: {Math.Round((decimal)hit / (hit + missed) * 100)}%";
+        else
+            ResAccuracyText.text = $"Accuracy: 0%";
         ResEarnedText.text = $"Earned: ${playerScore}";
         ResComboText.text = $"Highest Combo: {maxCombo}";
     }
