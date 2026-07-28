@@ -8,11 +8,11 @@ public class DamagePopup : MonoBehaviour
     private const float MAX_LIFETIME = 0.25f;
     private Color textColor;
 
-    public static DamagePopup Create(Vector3 position, string damage, bool isCritical = false)
+    public static DamagePopup Create(Vector3 position, string damage, bool isCritical = false, Color? color = null)
     {
         GameObject popupObject = Instantiate(Resources.Load("Prefabs/DamageNumber", typeof(GameObject)) as GameObject, position, Quaternion.identity);
         DamagePopup damagePopup = popupObject.GetComponent<DamagePopup>();
-        damagePopup.Setup(damage, isCritical);
+        damagePopup.Setup(damage, isCritical, color);
         return damagePopup;
     }
 
@@ -21,8 +21,12 @@ public class DamagePopup : MonoBehaviour
         textMesh = gameObject.GetComponent<TMP_Text>();
     }
 
-    public void Setup(string damageAmount, bool isCrit)
+    public void Setup(string damageAmount, bool isCrit, Color? color)
     {
+        if (color!=null)
+        {
+            textMesh.color = color.Value;
+        }
         textMesh.text = damageAmount.ToString();
         if (isCrit)
         {

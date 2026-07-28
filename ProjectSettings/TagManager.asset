@@ -9,6 +9,7 @@ TagManager:
   - LaserSpawn
   - Timer
   - GameManager
+  - DamageNumber
   layers:
   - Default
   - TransparentFX
